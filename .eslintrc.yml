@@ -108,7 +108,7 @@ rules:
 
   # Most of the dependencies are fine getting the initial value only
   react-hooks/exhaustive-deps:
-    - off
+    - warn
 
   require-jsdoc:
     - off
