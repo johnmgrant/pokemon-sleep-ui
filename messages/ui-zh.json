@@ -405,6 +405,13 @@
       "NoSkillAfterWakeup": "睡醒無技能機率"
     }
   },
+  "SleepStyle": {
+    "DrowsyPowerRequired": "最低睡意之力",
+    "SleepStyleDifficulty": "睡姿難易度",
+    "Message": {
+      "UnlockRankDiffers": "本站部分睡姿的解鎖等級有算入最低睡意之力所需要的卡比獸等級，因此會和 Serebii 或其他來源有所出入。詳情請見頁面右上方的相關文件。"
+    }
+  },
   "Stamina": {
     "Title": "活力計算",
     "SleepSession": "睡眠時間段",

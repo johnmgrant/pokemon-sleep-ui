@@ -1,4 +1,4 @@
-import {updateAnnouncements} from '@/controller/announcement';
+import {updateAnnouncements} from '@/controller/announcement/main';
 import {addDoc, deleteDoc, updateDoc} from '@/controller/docs';
 import {addSinglePokeInBox, deleteSinglePokeInBox, upsertSinglePokeInBox} from '@/controller/pokebox';
 import {addSleepdexRecord, removeSleepdexRecord} from '@/controller/sleepdex';
