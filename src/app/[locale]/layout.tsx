@@ -42,24 +42,27 @@ const RootLayout = ({children, params}: React.PropsWithChildren<LocaleLayoutProp
     <html lang={locale} className="h-full" suppressHydrationWarning>
       {/* Google Analytics */}
       {
-        isProduction() &&
-        <>
-          <Script
-            strategy="lazyOnload"
-            src="https://www.googletagmanager.com/gtag/js?id=G-2LL7T4CCZP"
-          />
-          <Script id="google-analytics">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-2LL7T4CCZP', {
-                send_page_view: false,
-                cookie_flags: 'samesite=none;secure'
-              });
-            `}
-          </Script>
-        </>
+        isProduction() ? (
+          <>
+            <Script
+              strategy="lazyOnload"
+              src="https://www.googletagmanager.com/gtag/js?id=G-2LL7T4CCZP"
+            />
+            <Script id="google-analytics">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-2LL7T4CCZP', {
+                  send_page_view: false,
+                  cookie_flags: 'samesite=none;secure'
+                });
+              `}
+            </Script>
+          </>
+        ) : (
+          <Script src="http://localhost:8097"></Script>
+        )
       }
       <React.Suspense>
         <SiteTracking/>

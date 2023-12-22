@@ -21,8 +21,7 @@ import {formatFloat} from '@/utils/number/format';
 import {isOcrRunning} from '@/utils/ocr/status';
 import {showToast} from '@/utils/toast';
 
-
-export const Ocr = <TData, >({buttonText, textToData, renderData, getWhitelistChars}: OcrCommonProps<TData>) => {
+export const Ocr = <TData,>({buttonText, textToData, renderData, getWhitelistChars}: OcrCommonProps<TData>) => {
   const [image, setImage] = React.useState<string | null>(null);
   const [settings, setSettings] = React.useState<OcrSettings>({
     locale: 'en',
@@ -30,53 +29,41 @@ export const Ocr = <TData, >({buttonText, textToData, renderData, getWhitelistCh
   });
 
   const t = useTranslations('UI.Ocr');
-  const {
-    state,
-    imageRef,
-    canvasRef,
-    runOcr,
-  } = useOcr({
+  const {state, imageRef, canvasRef, runOcr} = useOcr({
     settings,
     whitelistChars: getWhitelistChars(settings.locale),
-    onError: (message) => showToast({
-      isAlert: true,
-      content: message,
-    }),
+    onError: (message) =>
+      showToast({
+        isAlert: true,
+        content: message,
+      }),
   });
 
-  const {
-    error,
-    status,
-    progress,
-    text,
-  } = state;
+  const {error, status, progress, text} = state;
 
   const ocrRunning = isOcrRunning(status);
 
   return (
     <Flex className="gap-1.5">
-      <div className="hidden">
-        {image && <NextImage ref={imageRef} src={image} alt="OCR Origin"/>}
-        <canvas id="output" ref={canvasRef}/>
+      <div className="hidden" style={{position: 'fixed'}}>
+        {image && <NextImage ref={imageRef} src={image} alt="OCR Origin" priority />}
+        <canvas id="output" ref={canvasRef} />
       </div>
-      <AdsUnit/>
-      {
-        error &&
-        <Flex className="text-rose-600 shadow-rose-600 dark:text-rose-500 dark:shadow-rose-500">
-          {error}
-        </Flex>
-      }
+      <AdsUnit />
+      {error && <Flex className="text-rose-600 shadow-rose-600 dark:text-rose-500 dark:shadow-rose-500">{error}</Flex>}
       <Flex className="items-center gap-1.5 md:flex-row">
         <FilterTextInput
           style="none"
-          onClick={(locale) => setSettings((original) => ({
-            ...original,
-            locale,
-          }))}
+          onClick={(locale) =>
+            setSettings((original) => ({
+              ...original,
+              locale,
+            }))
+          }
           isActive={(ocrLang) => ocrLang === settings.locale}
           title={
             <Flex center className="px-2">
-              <LanguageIcon className="h-6 w-6"/>
+              <LanguageIcon className="h-6 w-6" />
             </Flex>
           }
           ids={[...ocrLocale]}
@@ -95,34 +82,35 @@ export const Ocr = <TData, >({buttonText, textToData, renderData, getWhitelistCh
           className="enabled:button-clickable-border disabled:button-disabled whitespace-nowrap px-4 py-1.5"
           onClick={runOcr}
           center
-          disabled={!image || ocrRunning}
-        >
+          disabled={!image || ocrRunning}>
           {ocrRunning ? `${t(`Status.${ocrStatusToI18nId[status]}`)} (${formatFloat(progress)}%)` : buttonText}
         </FlexButton>
       </Flex>
       <InfoSlider
         title={t('Tolerance.Title')}
         value={settings.tolerance}
-        setValue={(tolerance) => setSettings((original) => ({
-          ...original,
-          tolerance,
-        }))}
-        maxValue={50}
-      >
+        setValue={(tolerance) =>
+          setSettings((original) => ({
+            ...original,
+            tolerance,
+          }))
+        }
+        maxValue={50}>
         <Flex noFullWidth className="text-sm">
           {t('Tolerance.Tips')}
         </Flex>
       </InfoSlider>
-      <ProgressBar percent={progress}/>
+      <ProgressBar percent={progress} />
       <AnimatedCollapse show={!!text && status === 'completed'}>
-        {text && renderData({
-          data: textToData(text, settings.locale),
-          text,
-          image: {
-            raw: image,
-            processedCanvasRef: canvasRef,
-          },
-        })}
+        {text &&
+          renderData({
+            data: textToData(text, settings.locale),
+            text,
+            image: {
+              raw: image,
+              processedCanvasRef: canvasRef,
+            },
+          })}
       </AnimatedCollapse>
     </Flex>
   );

@@ -8,6 +8,9 @@
   "bracketSpacing": false,
   "arrowParens": "always",
   "jsxSingleQuote": false,
-  "bracketSameLine": false,
-  "endOfLine": "lf"
+  "bracketSameLine": true,
+  "endOfLine": "lf",
+  "jsxBracketSameLine": true,
+  "singleAttributePerLine": false,
+  "editorconfig": true
 }

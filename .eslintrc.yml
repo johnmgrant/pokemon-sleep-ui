@@ -5,10 +5,14 @@ env:
   jest: true
 
 extends:
-  - 'prettier'
+  # - prettier
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:@typescript-eslint/recommended
   - google
   - next/core-web-vitals
   - plugin:tailwindcss/recommended
+  - plugin:eslint-plugin-prettier/recommended
 
 globals:
   Atomics: readonly
@@ -23,11 +27,15 @@ parserOptions:
   sourceType: module
 
 plugins:
-  - 'prettier'
-  - '@typescript-eslint'
   - react
+  - '@typescript-eslint'
+  # - prettier
 
 rules:
+  prettier/prettier:
+    - warn
+    - usePrettierrc: true
+
   '@typescript-eslint/no-unused-vars':
     - error
     - varsIgnorePattern: '^[_]+$'
@@ -82,9 +90,10 @@ rules:
 
   import/newline-after-import:
     - error
-    - count: 2
+    # - count: 2
 
   object-curly-spacing: off
+  # comma-spacing: off
 
   '@typescript-eslint/object-curly-spacing':
     - error
@@ -96,17 +105,37 @@ rules:
   '@typescript-eslint/semi':
     - error
 
+  '@typescript-eslint/explicit-module-boundary-types':
+    - off
+
+  '@typescript-eslint/no-explicit-any':
+    - off
+
+  '@typescript-eslint/explicit-function-return-type':
+    - off
+
   space-in-parens:
     - error
     - never
 
-  # Typescript will perform this check, no need for React to check it
+  # Typescript will perform this checkno need for React to check it
   react/prop-types:
     - off
 
-  react/jsx-tag-spacing:
-    - error
-    - beforeSelfClosing: never
+  react/jsx-closing-bracket-location: off
+  react/jsx-closing-tag-location: off
+  react/jsx-curly-spacing: off
+  react/jsx-equals-spacing: off
+  react/jsx-first-prop-new-line: off
+  react/jsx-indent: off
+  react/jsx-indent-props: off
+  react/jsx-max-props-per-line: off
+  react/jsx-tag-spacing: off
+  react/jsx-wrap-multilines: off
+
+  # react/jsx-tag-spacing:
+  #   - error
+  #   - beforeSelfClosing: never
 
   # Most of the dependencies are fine getting the initial value only
   react-hooks/exhaustive-deps:

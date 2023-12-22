@@ -9,21 +9,13 @@ import {useGatedUpdateState} from '@/hooks/gatedUpdate';
 
 
 type UseOcrOpts = {
-  settings: OcrSettings,
-  whitelistChars: string,
-  onError: (message: string) => void,
+  settings: OcrSettings;
+  whitelistChars: string;
+  onError: (message: string) => void;
 };
 
-export const useOcr = ({
-  settings,
-  whitelistChars,
-  onError,
-}: UseOcrOpts): UseOcrReturn => {
-  const {
-    state,
-    setState,
-    setStateGated,
-  } = useGatedUpdateState<OcrState>({
+export const useOcr = (ocdOpts: UseOcrOpts): UseOcrReturn => {
+  const {state, setState, setStateGated} = useGatedUpdateState<OcrState>({
     gateMs: 250,
     initial: {
       error: null,
@@ -40,31 +32,59 @@ export const useOcr = ({
     const image = imageRef.current;
     if (!image) {
       const msg = 'No image ref available';
-      onError(msg);
+      ocdOpts.onError(msg);
       return;
     }
 
     const canvas = canvasRef.current;
     if (!canvas || !imageRef.current) {
       const msg = 'No canvas ref available';
-      onError(msg);
+      ocdOpts.onError(msg);
       return;
     }
 
     const ctx = canvas.getContext('2d', {willReadFrequently: true});
     if (!ctx) {
       const msg = 'No canvas 2D context available';
-      onError(msg);
+      ocdOpts.onError(msg);
       return;
     }
 
     if (!image.width || !image.height) {
       const msg = 'Image is 0 dimension for either width or height';
-      onError(msg);
+      ocdOpts.onError(msg);
       return;
     }
 
-    const {locale, tolerance} = settings;
+    const {locale, tolerance} = ocdOpts.settings;
+
+    const workLogger = ({progress, status}: Tesseract.LoggerMessage) => {
+      if (status === 'recognizing text') {
+        setStateGated({
+          error: null,
+          status: 'recognizing',
+          progress: progress * 100,
+          text: null,
+        });
+      } else {
+        setState({
+          error: null,
+          status: 'loadingOcr',
+          progress: 0,
+          text: null,
+        });
+      }
+    };
+
+    const workErrorHandler = (error: any) => {
+      console.error('OCR Error', error);
+      setState({
+        error: JSON.stringify(error),
+        status: 'error',
+        progress: 100,
+        text: null,
+      });
+    };
 
     setState({
       error: null,
@@ -89,63 +109,45 @@ export const useOcr = ({
       text: null,
     });
     const tesseractLang = ocrLocaleToTesseract[locale];
-    const worker = await createWorker(
-      tesseractLang,
-      OEM.DEFAULT,
-      {
-        logger: ({progress, status}) => {
-          if (status === 'recognizing text') {
-            setStateGated({
-              error: null,
-              status: 'recognizing',
-              progress: progress * 100,
-              text: null,
-            });
-          } else {
-            setState({
-              error: null,
-              status: 'loadingOcr',
-              progress: 0,
-              text: null,
-            });
-          }
-        },
-        errorHandler: (error) => {
-          console.error('OCR Error', error);
-          setState({
-            error: JSON.stringify(error),
-            status: 'error',
-            progress: 100,
-            text: null,
-          });
-        },
-      },
-    );
-    await worker.setParameters({
-      // 'S' could be mistakenly recognized as `$` in JP
-      // 'S' could be mistakenly recognized as `§` in EN
-      // @ts-ignore
-      tessedit_char_blacklist: '$§',
-      tessedit_char_whitelist: whitelistChars,
-    });
 
-    setState({
-      error: null,
-      status: 'recognizing',
-      progress: 0,
-      text: null,
-    });
-    const {data: {text}} = await worker.recognize(canvasRef.current.toDataURL('image/jpeg'));
+    try {
+      performance.mark('runOcr:start');
+      const worker = await createWorker(tesseractLang, OEM.DEFAULT, {
+        logger: workLogger,
+        errorHandler: workErrorHandler,
+      });
 
-    setState({
-      error: null,
-      status: 'completed',
-      progress: 100,
-      text,
-    });
-    await worker.terminate();
-    // return Promise.resolve();
-  }, [onError, setState, setStateGated, settings, whitelistChars]);
+      await worker.setParameters({
+        // 'S' could be mistakenly recognized as `$` in JP
+        // 'S' could be mistakenly recognized as `§` in EN
+        // @ts-ignore
+        tessedit_char_blacklist: '$§',
+        tessedit_char_whitelist: ocdOpts.whitelistChars,
+      });
+
+      setState({
+        error: null,
+        status: 'recognizing',
+        progress: 0,
+        text: null,
+      });
+      const {
+        data: {text},
+      } = await worker.recognize(canvasRef.current.toDataURL('image/jpeg'));
+
+      setState({
+        error: null,
+        status: 'completed',
+        progress: 100,
+        text,
+      });
+      await worker.terminate();
+    } catch (e) {
+      console.error('OCR Error', e);
+    }
+    performance.mark('runOcr:end');
+    performance.measure('runOcr', 'runOcr:start', 'runOcr:end');
+  }, [ocdOpts]);
 
   return {state, canvasRef, imageRef, runOcr};
 };
