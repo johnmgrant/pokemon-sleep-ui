@@ -2,7 +2,7 @@ import React from 'react';
 
 import {useTranslations} from 'next-intl';
 
-import {Link} from '@/components/i18n/exports';
+import {NextLink} from '@/components/i18n/link';
 import {Flex} from '@/components/layout/flex/common';
 import {ColoredEnergyIcon} from '@/components/shared/icon/energyColored';
 import {PokemonTypeIcon} from '@/components/shared/icon/pokeType';
@@ -25,7 +25,7 @@ export const BerryLink = ({berryData}: Props) => {
   const berryEnergyArray = berryData.energy.map(({energy}) => energy);
 
   return (
-    <Link scroll={false} prefetch={false} href={`/berry/${id}`} className="w-full">
+    <NextLink href={`/berry/${id}`} className="w-full">
       <Flex key={id} center className="button-clickable-bg gap-0.5 p-1">
         <Flex center className="relative">
           <div className="absolute bottom-0 right-1">
@@ -43,6 +43,6 @@ export const BerryLink = ({berryData}: Props) => {
           </div>
         </Flex>
       </Flex>
-    </Link>
+    </NextLink>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 import {clsx} from 'clsx';
 
-import {Link} from '@/components/i18n/exports';
+import {NextLink} from '@/components/i18n/link';
 import {Flex} from '@/components/layout/flex/common';
 import {FeatureLinkProps} from '@/components/shared/link/type';
 
@@ -28,11 +28,8 @@ export const FeatureLink = ({href, disabled, text, children}: React.PropsWithChi
   }
 
   return (
-    <Link
-      href={href}
+    <NextLink href={href}
       className={clsx('button-clickable group border border-slate-700 dark:border-slate-300', styles['home-link'])}
-      scroll={false}
-      prefetch={false}
     >
       <Flex
         direction="row" center
@@ -43,6 +40,6 @@ export const FeatureLink = ({href, disabled, text, children}: React.PropsWithChi
           {text}
         </div>
       </Flex>
-    </Link>
+    </NextLink>
   );
 };

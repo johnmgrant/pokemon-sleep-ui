@@ -2,7 +2,7 @@ import React from 'react';
 
 import {useTranslations} from 'next-intl';
 
-import {Link} from '@/components/i18n/exports';
+import {NextLink} from '@/components/i18n/link';
 import {Flex} from '@/components/layout/flex/common';
 import {NextImage} from '@/components/shared/common/image/main';
 import {ColoredEnergyIcon} from '@/components/shared/icon/energyColored';
@@ -22,7 +22,7 @@ export const IngredientLink = ({ingredient}: Props) => {
   const ingredientName = t2(id.toString());
 
   return (
-    <Link scroll={false} prefetch={false} href={`/ingredient/${id}`} className="w-full">
+    <NextLink href={`/ingredient/${id}`} className="w-full">
       <Flex key={id} center noFullWidth className="button-clickable-bg gap-0.5 p-1">
         <div className="relative h-12 w-12">
           <NextImage src={`/images/ingredient/${id}.png`} alt={ingredientName} sizes={imageSmallIconSizes}/>
@@ -55,6 +55,6 @@ export const IngredientLink = ({ingredient}: Props) => {
           </tbody>
         </table>
       </Flex>
-    </Link>
+    </NextLink>
   );
 };

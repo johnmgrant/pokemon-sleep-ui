@@ -2,7 +2,7 @@ import React from 'react';
 
 import {useTranslations} from 'next-intl';
 
-import {Link} from '@/components/i18n/exports';
+import {NextLink} from '@/components/i18n/link';
 import {Flex} from '@/components/layout/flex/common';
 import {NextImage} from '@/components/shared/common/image/main';
 import {GenericPokeballIcon} from '@/components/shared/icon/pokeball';
@@ -38,14 +38,14 @@ export const PokemonLinkPopupContent = ({pokemon}: Props) => {
       </div>
       <Flex direction="row" className="gap-2">
         <Flex>
-          <Link scroll={false} prefetch={false} href={`/pokedex/${id}`}>
+          <NextLink href={`/pokedex/${id}`}>
             <Flex center className="button-clickable-bg group p-2">
               <GenericPokeballIcon dimension="h-10 w-10" alt={t('Pokedex.Page.Title', {name})}/>
             </Flex>
-          </Link>
+          </NextLink>
         </Flex>
         <Flex>
-          <Link scroll={false} prefetch={false} href={`/analysis/${id}`}>
+          <NextLink href={`/analysis/${id}`}>
             <Flex center className="button-clickable-bg group p-2">
               <div className="relative h-10 w-10">
                 <NextImage
@@ -54,7 +54,7 @@ export const PokemonLinkPopupContent = ({pokemon}: Props) => {
                 />
               </div>
             </Flex>
-          </Link>
+          </NextLink>
         </Flex>
       </Flex>
     </Flex>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import {useTranslations} from 'next-intl';
 
-import {Link} from '@/components/i18n/exports';
+import {NextLink} from '@/components/i18n/link';
 import {Flex} from '@/components/layout/flex/common';
 import {NextImage} from '@/components/shared/common/image/main';
 import {imageGallerySizes, imageSmallIconSizes} from '@/styles/image';
@@ -14,7 +14,7 @@ export const NavListHome = () => {
   const rankBallId = Date.now() % 4 + 1;
 
   return (
-    <Link scroll={false} prefetch={false} href="/" className="button-clickable-bg group">
+    <NextLink href="/" className="button-clickable-bg group">
       <div className="relative h-48 w-full">
         <NextImage
           src="/images/theme/3iggs.png" alt="Nav Theme"
@@ -30,6 +30,6 @@ export const NavListHome = () => {
           {t('Site.Name')}
         </div>
       </Flex>
-    </Link>
+    </NextLink>
   );
 };

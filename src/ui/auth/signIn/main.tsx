@@ -4,7 +4,7 @@ import EnvelopeIcon from '@heroicons/react/24/outline/EnvelopeIcon';
 import {redirect} from 'next/navigation';
 import {getServerSession} from 'next-auth';
 
-import {Link} from '@/components/i18n/exports';
+import {NextLink} from '@/components/i18n/link';
 import {Flex} from '@/components/layout/flex/common';
 import {authOptions} from '@/const/auth';
 import {DefaultPageProps} from '@/types/next/page/common';
@@ -32,12 +32,12 @@ export const AuthSignIn = async ({params, searchParams}: DefaultPageProps) => {
     <AuthLayout locale={locale}>
       <AuthSignInExternal/>
       <Flex className="items-end">
-        <Link scroll={false} prefetch={false} href={'/auth/sign-in/email'} className="border-link w-fit">
+        <NextLink href={'/auth/sign-in/email'} className="border-link w-fit">
           <Flex direction="row" noFullWidth center className="gap-1.5">
             <EnvelopeIcon className="h-6 w-6"/>
             <div>Email</div>
           </Flex>
-        </Link>
+        </NextLink>
       </Flex>
     </AuthLayout>
   );

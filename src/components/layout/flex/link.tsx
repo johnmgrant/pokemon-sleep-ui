@@ -2,7 +2,7 @@ import {UrlObject} from 'url';
 
 import React, {HTMLAttributeAnchorTarget} from 'react';
 
-import {Link} from '@/components/i18n/exports';
+import {NextLink} from '@/components/i18n/link';
 import {FlexCommonProps} from '@/components/layout/flex/type';
 import {getFlexStyles} from '@/components/layout/flex/utils';
 
@@ -20,7 +20,7 @@ const FlexLinkInternal = ({
   children,
   ...props
 }: React.PropsWithChildren<Props>, ref: React.ForwardedRef<HTMLAnchorElement>) => (
-  <Link
+  <NextLink
     ref={ref}
     href={href}
     className={getFlexStyles(direction, {noFullWidth, ...props})}
@@ -29,7 +29,7 @@ const FlexLinkInternal = ({
     prefetch={false}
   >
     {children}
-  </Link>
+  </NextLink>
 );
 
 export const FlexLink = React.forwardRef(FlexLinkInternal);

@@ -3,7 +3,7 @@ import React from 'react';
 import CurrencyDollarIcon from '@heroicons/react/24/outline/CurrencyDollarIcon';
 import UserCircleIcon from '@heroicons/react/24/outline/UserCircleIcon';
 
-import {Link} from '@/components/i18n/exports';
+import {NextLink} from '@/components/i18n/link';
 import {Flex} from '@/components/layout/flex/common';
 import {DiscordLink} from '@/components/static/discord/link';
 import {discordLink} from '@/const/external';
@@ -45,14 +45,14 @@ export const About = async ({params}: DefaultPageProps) => {
               <CurrencyDollarIcon className="h-10 w-10"/>
             </Flex>
             <AboutSection title="Patreon">
-              <Link scroll={false} prefetch={false} href="https://patreon.com/RaenonX" className="border-link">
+              <NextLink href="https://patreon.com/RaenonX" className="border-link">
                 https://patreon.com/RaenonX
-              </Link>
+              </NextLink>
             </AboutSection>
             <AboutSection title="Discord">
-              <Link scroll={false} prefetch={false} href={discordLink} className="border-link">
+              <NextLink href={discordLink} className="border-link">
                 {discordLink}
-              </Link>
+              </NextLink>
             </AboutSection>
           </Flex>
         </Flex>
