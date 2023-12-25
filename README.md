@@ -62,3 +62,10 @@ Discord: https://discord.gg/eeveesleep
 ### Video Tutorial (Traditional Chinese)
 
 - Discord `yuhsin#5108`
+
+## Development
+
+### React DevTools
+
+- React Dev Tools can be enabled via the `REACT_APP_DEV_TOOLS=true` environment variable and running `yarn run dev:debug-client` with `yarn dev` running in another process. This will allow for React debug/ profiling on Safari via `http://localhost:8097`.
+  - Read the [React Native document](https://reactnative.dev/docs/react-devtools) for more information.

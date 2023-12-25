@@ -23,6 +23,8 @@ export const generateStaticParams: GenerateStaticParamsFunc<LocaleLayoutParams> 
   return locales.map((locale) => ({locale}));
 };
 
+const isLoadReactDevTools = !isProduction() && !!process.env.REACT_APP_DEV_TOOLS;
+
 const font = Noto_Sans({
   weight: '400',
   subsets: ['latin'],
@@ -41,13 +43,9 @@ const RootLayout = ({children, params}: React.PropsWithChildren<LocaleLayoutProp
   return (
     <html lang={locale} className="h-full" suppressHydrationWarning>
       {/* Google Analytics */}
-      {
-        isProduction() &&
+      {isProduction() && (
         <>
-          <Script
-            strategy="lazyOnload"
-            src="https://www.googletagmanager.com/gtag/js?id=G-2LL7T4CCZP"
-          />
+          <Script strategy="lazyOnload" src="https://www.googletagmanager.com/gtag/js?id=G-2LL7T4CCZP"/>
           <Script id="google-analytics">
             {`
               window.dataLayer = window.dataLayer || [];
@@ -60,7 +58,8 @@ const RootLayout = ({children, params}: React.PropsWithChildren<LocaleLayoutProp
             `}
           </Script>
         </>
-      }
+      )}
+      {isLoadReactDevTools && <Script src="http://localhost:8097"></Script>}
       <React.Suspense>
         <SiteTracking/>
       </React.Suspense>
