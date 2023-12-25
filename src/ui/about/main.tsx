@@ -45,12 +45,12 @@ export const About = async ({params}: DefaultPageProps) => {
               <CurrencyDollarIcon className="h-10 w-10"/>
             </Flex>
             <AboutSection title="Patreon">
-              <Link href="https://patreon.com/RaenonX" className="border-link">
+              <Link scroll={false} prefetch={false} href="https://patreon.com/RaenonX" className="border-link">
                 https://patreon.com/RaenonX
               </Link>
             </AboutSection>
             <AboutSection title="Discord">
-              <Link href={discordLink} className="border-link">
+              <Link scroll={false} prefetch={false} href={discordLink} className="border-link">
                 {discordLink}
               </Link>
             </AboutSection>

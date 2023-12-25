@@ -20,7 +20,14 @@ const FlexLinkInternal = ({
   children,
   ...props
 }: React.PropsWithChildren<Props>, ref: React.ForwardedRef<HTMLAnchorElement>) => (
-  <Link ref={ref} href={href} className={getFlexStyles(direction, {noFullWidth, ...props})} target={target}>
+  <Link
+    ref={ref}
+    href={href}
+    className={getFlexStyles(direction, {noFullWidth, ...props})}
+    target={target}
+    scroll={false}
+    prefetch={false}
+  >
     {children}
   </Link>
 );
